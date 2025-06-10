@@ -46,7 +46,7 @@ const App = () => {
       'foto5.jpg',
       'foto6.jpg',
       'foto7.jpg',
-      'foto8.jpg'
+      'foto8.jpg',
       'foto9.jpg'
       // Adicione mais conforme necessário
     ];
