@@ -87,13 +87,14 @@ const App = () => {
 
   // Função para abrir Google Maps
   const openGoogleMaps = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${sitioLocation.lat},${sitioLocation.lng}`;
+    const waypoint = "-23.471294079483087,-45.869177981035584";
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${sitioLocation.lat},${sitioLocation.lng}&waypoints=${waypoint}`;
     window.open(url, '_blank');
   };
 
-  // Função para abrir Waze
+  // Função para abrir Waze com waypoint
   const openWaze = () => {
-    const url = `https://waze.com/ul?ll=${sitioLocation.lat}%2C${sitioLocation.lng}&navigate=yes`;
+    const url = `https://waze.com/ul?ll=${sitioLocation.lat}%2C${sitioLocation.lng}&navigate=yes&via=-23.471294079483087,-45.869177981035584`;
     window.open(url, '_blank');
   };
 
