@@ -147,7 +147,7 @@ const App = () => {
             color: '#1f2937',
             margin: '0 0 8px 0'
           }}>
-            📍 Sítio Canaã
+            📍 Chácara Canaã
           </h1>
           <p style={{ 
             color: '#6b7280', 
@@ -461,13 +461,13 @@ const App = () => {
         }}>
           <div style={{ color: '#6b7280' }}>
             <p style={{ margin: '0 0 8px 0' }}>
-              <strong>Sítio Canaã - Estância Nova Campos</strong>
+              <strong>Chácara Canaã - Estância Nova Campos</strong>
             </p>
             <p style={{ margin: '0 0 8px 0' }}>
               <strong>Coordenadas:</strong> {sitioLocation.lat}, {sitioLocation.lng}
             </p>
             <p style={{ fontSize: '14px', margin: 0 }}>
-              Dashboard criado para facilitar o acesso e monitoramento do Sítio Canaã
+              Dashboard criado para facilitar o acesso e monitoramento da Chácara Canaã
             </p>
           </div>
         </footer>
@@ -583,7 +583,7 @@ const App = () => {
             </button>
             
             <h3 style={{ marginTop: 0, marginBottom: '24px', color: '#1f2937', textAlign: 'center' }}>
-              📸 Galeria de Fotos - Sítio Canaã
+              📸 Galeria de Fotos - Chácara Canaã
             </h3>
 
             {!selectedPhoto ? (
