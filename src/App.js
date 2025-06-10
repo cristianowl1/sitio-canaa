@@ -57,7 +57,7 @@ const App = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://api.allorigins.win/get?url=${encodeURIComponent('http://api.weatherstack.com/current?access_key=e997a6352a042e440be45f51beeb6515&query=Santa Branca, SP')}`
+          `https://api.allorigins.win/get?url=${encodeURIComponent('http://api.weatherstack.com/current?access_key=e997a6352a042e440be45f51beeb6515&language=pt&query=Santa Branca, SP')}`
         );
         
         if (!response.ok) {
