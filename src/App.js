@@ -37,18 +37,16 @@ const App = () => {
   // Carregar lista de fotos
   useEffect(() => {
     // Lista de fotos que devem estar em public/fotos/
-    // Você pode adicionar mais fotos aqui
     const photoList = [
       'foto1.jpg',
       'foto2.jpg', 
       'foto3.jpg',
       'foto4.jpg',
       'foto5.jpg',
-      'foto6.jpg',
+      'foto6.jpg',      
       'foto7.jpg',
       'foto8.jpg',
       'foto9.jpg'
-      // Adicione mais conforme necessário
     ];
     setPhotos(photoList);
   }, []);
@@ -58,7 +56,6 @@ const App = () => {
     const fetchWeather = async () => {
       try {
         setLoading(true);
-        // Usando proxy para evitar problemas de CORS
         const response = await fetch(
           `https://api.allorigins.win/get?url=${encodeURIComponent('http://api.weatherstack.com/current?access_key=e997a6352a042e440be45f51beeb6515&query=Santa Branca, SP')}`
         );
@@ -84,8 +81,6 @@ const App = () => {
     };
 
     fetchWeather();
-    
-    // Atualizar clima a cada 30 minutos
     const interval = setInterval(fetchWeather, 30 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -475,3 +470,227 @@ const App = () => {
               Dashboard criado para facilitar o acesso e monitoramento do Sítio Canaã
             </p>
           </div>
+        </footer>
+      </div>
+
+      {/* Modal da Câmera */}
+      {selectedCamera && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px'
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '24px',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+            position: 'relative',
+            overflow: 'auto'
+          }}>
+            <button
+              onClick={closeCameraModal}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                backgroundColor: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              ✕
+            </button>
+            <h3 style={{ marginTop: 0, marginBottom: '16px', color: '#1f2937' }}>
+              📹 {selectedCamera.name}
+            </h3>
+            <iframe
+              src={selectedCamera.url}
+              style={{
+                width: '100%',
+                height: '500px',
+                border: 'none',
+                borderRadius: '8px'
+              }}
+              title={`Câmera ${selectedCamera.name}`}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Modal da Galeria de Fotos */}
+      {showGallery && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px'
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '24px',
+            maxWidth: '95vw',
+            maxHeight: '95vh',
+            position: 'relative',
+            overflow: 'auto'
+          }}>
+            <button
+              onClick={closeGallery}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                backgroundColor: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1001
+              }}
+            >
+              ✕
+            </button>
+            
+            <h3 style={{ marginTop: 0, marginBottom: '24px', color: '#1f2937', textAlign: 'center' }}>
+              📸 Galeria de Fotos - Sítio Canaã
+            </h3>
+
+            {!selectedPhoto ? (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: '16px',
+                maxHeight: '70vh',
+                overflowY: 'auto'
+              }}>
+                {photos.map((photo, index) => (
+                  <div
+                    key={index}
+                    onClick={() => selectPhoto(photo)}
+                    style={{
+                      cursor: 'pointer',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      transition: 'transform 0.2s',
+                      backgroundColor: '#f3f4f6'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    <img
+                      src={`/fotos/${photo}`}
+                      alt={`Foto ${index + 1} do Sítio Canaã`}
+                      style={{
+                        width: '100%',
+                        height: '150px',
+                        objectFit: 'cover'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div style={{
+                      display: 'none',
+                      height: '150px',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#6b7280',
+                      fontSize: '14px'
+                    }}>
+                      Foto não encontrada
+                    </div>
+                    <div style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      fontSize: '14px',
+                      color: '#6b7280'
+                    }}>
+                      {photo}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <button
+                  onClick={() => setSelectedPhoto(null)}
+                  style={{
+                    backgroundColor: '#6b7280',
+                    color: 'white',
+                    border: 'none',
+                    padding: '8px 16px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    marginBottom: '16px',
+                    fontSize: '14px'
+                  }}
+                >
+                  ← Voltar à galeria
+                </button>
+                <div style={{
+                  maxHeight: '75vh',
+                  overflow: 'auto',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}>
+                  <img
+                    src={`/fotos/${selectedPhoto}`}
+                    alt={`Foto selecionada: ${selectedPhoto}`}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                </div>
+                <p style={{
+                  marginTop: '12px',
+                  color: '#6b7280',
+                  fontSize: '14px'
+                }}>
+                  {selectedPhoto}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
