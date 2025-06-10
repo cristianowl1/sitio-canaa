@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Camera, Cloud, Navigation, Sun, Eye, Wind, Droplets, Thermometer, Clock } from 'lucide-react';
-import './App.css';
 
 const App = () => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCamera, setSelectedCamera] = useState(null);
+  const [showGallery, setShowGallery] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photos, setPhotos] = useState([]);
 
   // Coordenadas do sítio
   const sitioLocation = {
@@ -31,6 +33,25 @@ const App = () => {
       id: 7
     }
   ];
+
+  // Carregar lista de fotos
+  useEffect(() => {
+    // Lista de fotos que devem estar em public/fotos/
+    // Você pode adicionar mais fotos aqui
+    const photoList = [
+      'foto1.jpg',
+      'foto2.jpg', 
+      'foto3.jpg',
+      'foto4.jpg',
+      'foto5.jpg',
+      'foto6.jpg',
+      'foto7.jpg',
+      'foto8.jpg'
+      'foto9.jpg'
+      // Adicione mais conforme necessário
+    ];
+    setPhotos(photoList);
+  }, []);
 
   // Buscar dados do clima
   useEffect(() => {
@@ -81,141 +102,279 @@ const App = () => {
     window.open(url, '_blank');
   };
 
-  // Função para abrir câmera
+  // Função para abrir câmera (agora em modal)
   const openCamera = (camera) => {
-    window.open(camera.url, '_blank');
+    setSelectedCamera(camera);
+  };
+
+  // Função para fechar modal da câmera
+  const closeCameraModal = () => {
+    setSelectedCamera(null);
+  };
+
+  // Função para abrir galeria de fotos
+  const openGallery = () => {
+    setShowGallery(true);
+  };
+
+  // Função para fechar galeria
+  const closeGallery = () => {
+    setShowGallery(false);
+    setSelectedPhoto(null);
+  };
+
+  // Função para selecionar foto
+  const selectPhoto = (photo) => {
+    setSelectedPhoto(photo);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%)',
+      fontFamily: 'Arial, sans-serif'
+    }}>
       {/* Header */}
-      <header className="bg-white shadow-lg border-b-4 border-green-500">
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-center">
-            <MapPin className="h-8 w-8 text-green-600 mr-3" />
-            <h1 className="text-3xl font-bold text-gray-800">Sítio Canaã</h1>
-          </div>
-          <p className="text-center text-gray-600 mt-2">
+      <header style={{ 
+        backgroundColor: 'white', 
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        borderBottom: '4px solid #10b981'
+      }}>
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '24px 16px',
+          textAlign: 'center'
+        }}>
+          <h1 style={{ 
+            fontSize: '2rem', 
+            fontWeight: 'bold', 
+            color: '#1f2937',
+            margin: '0 0 8px 0'
+          }}>
+            📍 Sítio Canaã
+          </h1>
+          <p style={{ 
+            color: '#6b7280', 
+            margin: 0 
+          }}>
             Estância Nova Campos - Monitoramento e navegação
           </p>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div style={{ 
+        maxWidth: '1200px', 
+        margin: '0 auto', 
+        padding: '32px 16px' 
+      }}>
+        
+        {/* Menu de Navegação */}
+        <div style={{ marginBottom: '32px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gap: '16px',
+            marginBottom: '24px'
+          }}>
+            <button
+              onClick={openGallery}
+              style={{
+                backgroundColor: '#10b981',
+                color: 'white',
+                padding: '16px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: '600',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#059669'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#10b981'}
+            >
+              📸 Galeria de Fotos
+            </button>
+          </div>
+        </div>
+
         {/* Seção de Navegação */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-            <Navigation className="h-6 w-6 mr-2 text-blue-600" />
-            Como Chegar
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            color: '#1f2937', 
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            🧭 Como Chegar
           </h2>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            gap: '16px' 
+          }}>
             <button
               onClick={openGoogleMaps}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105"
+              style={{
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                padding: '16px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: '600',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#2563eb'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#3b82f6'}
             >
-              <MapPin className="h-5 w-5" />
-              <span className="font-semibold">Abrir no Google Maps</span>
+              📍 Abrir no Google Maps
             </button>
             <button
               onClick={openWaze}
-              className="bg-cyan-500 hover:bg-cyan-600 text-white p-4 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105"
+              style={{
+                backgroundColor: '#06b6d4',
+                color: 'white',
+                padding: '16px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: '600',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#0891b2'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#06b6d4'}
             >
-              <Navigation className="h-5 w-5" />
-              <span className="font-semibold">Abrir no Waze</span>
+              🚗 Abrir no Waze
             </button>
           </div>
         </div>
 
         {/* Seção do Clima */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-            <Cloud className="h-6 w-6 mr-2 text-blue-600" />
-            Clima Local
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            color: '#1f2937', 
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            ☁️ Clima Local
           </h2>
           
           {loading ? (
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-gray-300 h-16 w-16"></div>
-                <div className="flex-1 space-y-2 py-1">
-                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                </div>
-              </div>
+            <div style={{ 
+              backgroundColor: 'white', 
+              borderRadius: '8px', 
+              padding: '24px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>
+              <p>Carregando dados do clima...</p>
             </div>
           ) : error ? (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-              <p className="text-red-600">Erro ao carregar dados do clima: {error}</p>
-              <p className="text-red-500 text-sm mt-2">
+            <div style={{ 
+              backgroundColor: '#fef2f2', 
+              border: '1px solid #fecaca',
+              borderRadius: '8px', 
+              padding: '24px'
+            }}>
+              <p style={{ color: '#dc2626' }}>Erro ao carregar dados do clima: {error}</p>
+              <p style={{ color: '#ef4444', fontSize: '14px', marginTop: '8px' }}>
                 Verifique sua conexão com a internet ou tente novamente mais tarde.
               </p>
             </div>
           ) : weather ? (
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex items-center space-x-4">
+            <div style={{ 
+              backgroundColor: 'white', 
+              borderRadius: '8px', 
+              padding: '24px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                gap: '24px' 
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <img 
                     src={weather.current.weather_icons[0]} 
                     alt={weather.current.weather_descriptions[0]}
-                    className="h-16 w-16"
+                    style={{ width: '64px', height: '64px' }}
                   />
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800">
+                    <h3 style={{ 
+                      fontSize: '1.25rem', 
+                      fontWeight: '600', 
+                      color: '#1f2937',
+                      margin: '0 0 4px 0'
+                    }}>
                       {weather.location.name}
                     </h3>
-                    <p className="text-3xl font-bold text-blue-600">
+                    <p style={{ 
+                      fontSize: '2rem', 
+                      fontWeight: 'bold', 
+                      color: '#2563eb',
+                      margin: '0 0 4px 0'
+                    }}>
                       {weather.current.temperature}°C
                     </p>
-                    <p className="text-gray-600">
+                    <p style={{ 
+                      color: '#6b7280',
+                      margin: 0
+                    }}>
                       {weather.current.weather_descriptions[0]}
                     </p>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Thermometer className="h-4 w-4 text-red-500" />
-                    <span>Sensação: {weather.current.feelslike}°C</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Droplets className="h-4 w-4 text-blue-500" />
-                    <span>Umidade: {weather.current.humidity}%</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Wind className="h-4 w-4 text-gray-500" />
-                    <span>Vento: {weather.current.wind_speed} km/h</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Eye className="h-4 w-4 text-gray-500" />
-                    <span>Visibilidade: {weather.current.visibility} km</span>
-                  </div>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(2, 1fr)', 
+                  gap: '16px',
+                  fontSize: '14px'
+                }}>
+                  <div>🌡️ Sensação: {weather.current.feelslike}°C</div>
+                  <div>💧 Umidade: {weather.current.humidity}%</div>
+                  <div>💨 Vento: {weather.current.wind_speed} km/h</div>
+                  <div>👁️ Visibilidade: {weather.current.visibility} km</div>
                 </div>
               </div>
               
               {weather.current.astro && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
-                    <div className="flex items-center space-x-2">
-                      <Sun className="h-4 w-4 text-yellow-500" />
-                      <span>Nascer: {weather.current.astro.sunrise}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Sun className="h-4 w-4 text-orange-500" />
-                      <span>Pôr: {weather.current.astro.sunset}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span>Fase da Lua: {weather.current.astro.moon_phase}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs">🌙</span>
-                      <span>Iluminação: {weather.current.astro.moon_illumination}%</span>
-                    </div>
+                <div style={{ 
+                  marginTop: '16px', 
+                  paddingTop: '16px', 
+                  borderTop: '1px solid #e5e7eb'
+                }}>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                    gap: '16px',
+                    fontSize: '14px',
+                    color: '#6b7280'
+                  }}>
+                    <div>🌅 Nascer: {weather.current.astro.sunrise}</div>
+                    <div>🌇 Pôr: {weather.current.astro.sunset}</div>
+                    <div>🌙 Fase da Lua: {weather.current.astro.moon_phase}</div>
+                    <div>🌕 Iluminação: {weather.current.astro.moon_illumination}%</div>
                   </div>
                 </div>
               )}
               
-              <div className="mt-4 text-xs text-gray-500 text-center">
+              <div style={{ 
+                marginTop: '16px', 
+                fontSize: '12px', 
+                color: '#9ca3af', 
+                textAlign: 'center' 
+              }}>
                 Última atualização: {weather.location.localtime}
               </div>
             </div>
@@ -223,52 +382,96 @@ const App = () => {
         </div>
 
         {/* Seção das Câmeras */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-            <Camera className="h-6 w-6 mr-2 text-purple-600" />
-            Câmeras da Estrada
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            color: '#1f2937', 
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            📹 Câmeras da Estrada
           </h2>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            gap: '16px' 
+          }}>
             {cameras.map((camera, index) => (
               <button
                 key={index}
                 onClick={() => openCamera(camera)}
-                className="bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-purple-300 p-6 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105"
+                style={{
+                  backgroundColor: 'white',
+                  border: '2px solid #e5e7eb',
+                  padding: '24px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#a855f7';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = 'white';
+                  e.target.style.borderColor = '#e5e7eb';
+                }}
               >
-                <div className="flex flex-col items-center space-y-3">
-                  <Camera className="h-8 w-8 text-purple-600" />
-                  <h3 className="font-semibold text-gray-800 text-center">
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  gap: '12px' 
+                }}>
+                  <span style={{ fontSize: '32px' }}>📹</span>
+                  <h3 style={{ 
+                    fontWeight: '600', 
+                    color: '#1f2937', 
+                    textAlign: 'center',
+                    margin: 0
+                  }}>
                     {camera.name}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p style={{ 
+                    fontSize: '14px', 
+                    color: '#6b7280',
+                    margin: 0
+                  }}>
                     Clique para visualizar
                   </p>
                 </div>
               </button>
             ))}
           </div>
-          <div className="mt-4 text-sm text-gray-600 text-center">
+          <div style={{ 
+            marginTop: '16px', 
+            fontSize: '14px', 
+            color: '#6b7280', 
+            textAlign: 'center' 
+          }}>
             * As câmeras são fornecidas pela EcoRodovias e mostram as condições atuais do tráfego
           </div>
         </div>
 
         {/* Rodapé com informações */}
-        <footer className="bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="text-gray-600">
-            <p className="mb-2">
+        <footer style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '8px', 
+          padding: '24px', 
+          textAlign: 'center',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+        }}>
+          <div style={{ color: '#6b7280' }}>
+            <p style={{ margin: '0 0 8px 0' }}>
               <strong>Sítio Canaã - Estância Nova Campos</strong>
             </p>
-            <p className="mb-2">
+            <p style={{ margin: '0 0 8px 0' }}>
               <strong>Coordenadas:</strong> {sitioLocation.lat}, {sitioLocation.lng}
             </p>
-            <p className="text-sm">
+            <p style={{ fontSize: '14px', margin: 0 }}>
               Dashboard criado para facilitar o acesso e monitoramento do Sítio Canaã
             </p>
           </div>
-        </footer>
-      </div>
-    </div>
-  );
-};
-
-export default App;
