@@ -23,7 +23,7 @@ const App = () => {
       id: 4
     },
     {
-      name: "Pedágio Itaquá km 32", 
+      name: "Pedágio Itaquá, km 32", 
       url: "https://api.ecorodovias.com.br/anonymous/ecorodovias-portal/ecopistas/boletim/camera/3",
       id: 3
     },
@@ -154,7 +154,7 @@ const App = () => {
             color: '#6b7280', 
             margin: 0 
           }}>
-            Estância Nova Campos - Monitoramento e navegação
+            Estância Nova Campos do Jordão - Santa Branca - Monitoramento e navegação
           </p>
         </div>
       </header>
